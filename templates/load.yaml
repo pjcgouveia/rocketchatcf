@@ -1,0 +1,18 @@
+{{- if .Values.load.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: "{{ .Release.Name }}-loadbalancer"
+  labels:
+    app: {{ template "rocketchatcf.name" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+spec:
+  type: LoadBalancer
+  ports:
+  - port: {{ .Values.load.port }}
+    targetPort: 3000
+  selector:
+    app: {{ template "rocketchatcf.name" . }}
+{{- end -}}

@@ -1,0 +1,112 @@
+## Rocket Chat image version
+## ref: https://hub.docker.com/r/library/rocket.chat/tags/
+##
+image: rocket.chat:0.62
+
+## Specify a imagePullPolicy
+## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
+## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
+##
+# imagePullPolicy:
+
+## Host for the application
+##
+# host:
+
+# Main RocketChat configuration:
+config:
+  SMTP_Host:
+  SMTP_Port:
+  SMTP_Username:
+  SMTP_Password:
+  From_Email:
+  Jitsi_Enabled: false
+  Jitsi_Domain: meet.jit.si
+  Jitsi_URL_Room_Prefix: RocketChat
+  Jitsi_Open_New_Window: false
+  Jitsi_Enable_Channels: false
+  Jitsi_Chrome_Extension:
+  WebRTC_Enable_Channel: false
+  WebRTC_Enable_Private: false
+  WebRTC_Enable_Direct: false
+
+##
+## MongoDB chart configuration
+##
+mongodb:
+  ## MongoDB admin password
+  ### ref: https://github.com/bitnami/bitnami-docker-mongodb/blob/master/README.md#setting-the-root-password-on-first-run
+  ###
+  ## mongodbRootPassword:
+  #
+  ## MongoDB custom user and database
+  ## ref: https://github.com/bitnami/bitnami-docker-mongodb/blob/master/README.md#creating-a-user-and-database-on-first-run
+  ##
+  # mongodbUsername:
+  # mongodbPassword:
+  # mongodbDatabase:
+  ## Enable persistence using Persistent Volume Claims
+  ## ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
+  ##
+  persistence:
+    enabled: false
+    ## mongodb data Persistent Volume Storage Class
+    ## If defined, storageClassName: <storageClass>
+    ## If set to "-", storageClassName: "", which disables dynamic provisioning
+    ## If undefined (the default) or set to null, no storageClassName spec is
+    ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+    ##   GKE, AWS & OpenStack)
+    ##
+    # storageClass: "-"
+    accessMode: ReadWriteOnce
+    size: 8Gi
+
+## Enable persistence using Persistent Volume Claims
+## ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
+##
+persistence:
+  enabled: false
+  ## rocketchat data Persistent Volume Storage Class
+  ## If defined, storageClassName: <storageClass>
+  ## If set to "-", storageClassName: "", which disables dynamic provisioning
+  ## If undefined (the default) or set to null, no storageClassName spec is
+  ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+  ##   GKE, AWS & OpenStack)
+  ##
+  # storageClass: "-"
+  accessMode: ReadWriteOnce
+  size: 8Gi
+
+## Configure resource requests and limits
+## ref: http://kubernetes.io/docs/user-guide/compute-resources/
+##
+# resources:
+#   requests:
+#     memory: 512Mi
+#     cpu: 300m
+
+## Configure the ingress object to hook into existing infastructure
+### ref : http://kubernetes.io/docs/user-guide/ingress/
+###
+ingress:
+  enabled: false
+  tls: false
+  annotations:
+    ingress.kubernetes.io/ssl-redirect: "true"
+    kubernetes.io/ingress.class: "nginx"
+
+  ## ingress.htpasswdString if specified main web service requires authentication.
+  ## Format: _user:$apr1$F..._
+  ## > NOTE: Requires nginx ingress controller
+  # htpasswdString: "user:$apr1$FfVI2PRr$f9MW8rsr5RmmxbdV0Iipk1"
+
+  ## ingress.secretName required if tls is enabled
+  ## secretName: tls-certificate
+
+  ## ingress.authSecretName required if using authentication
+  ## authSecretName: basic-auth-credentials
+
+  #Configures a load balancer to expose Rocket.Chat ouside the cluster. Only should be enabled if ingress is disabled    
+load:
+  enabled: false
+  port: 80
